@@ -1,0 +1,22 @@
+{
+  "total_records": 3655,
+  "cities": [
+    "Medell\u00edn",
+    "Bogot\u00e1",
+    "Cali",
+    "Barranquilla",
+    "Cartagena"
+  ],
+  "date_range": {
+    "start": "2023-01-01",
+    "end": "2024-12-31"
+  },
+  "variables": [
+    "temperature_2m_max",
+    "temperature_2m_min",
+    "temperature_2m_mean",
+    "precipitation_sum",
+    "windspeed_10m_max",
+    "sunshine_duration"
+  ]
+}
