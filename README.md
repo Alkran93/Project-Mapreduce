@@ -105,7 +105,7 @@
 ### 5. Running the System
 
 #### Step 1: Upload Raw Data to HDFS
-    ```bash
+    
     RAW_DATA_PATH="./data/raw/weather_data.csv"
     HDFS_DIR="/user/sofia/climate_data/raw"
 
@@ -119,29 +119,27 @@
 
 #### Step 2: Run MapReduce Jobs
 Precipitation Job (run_precipitation.sh):
-   
-    ```bash
-       INPUT_HDFS="/user/sofia/climate_data/raw/weather_data.csv"
-       OUTPUT_HDFS="/user/sofia/climate_data/processed/precipitation"
+       
+    INPUT_HDFS="/user/sofia/climate_data/raw/weather_data.csv"
+    OUTPUT_HDFS="/user/sofia/climate_data/processed/precipitation"
 
-       echo "Running precipitation MapReduce job on Hadoop..."
-       python mapreduce/precipitation_analysis.py -r hadoop $INPUT_HDFS --output-dir $OUTPUT_HDFS --no-output
+    echo "Running precipitation MapReduce job on Hadoop..."
+    python mapreduce/precipitation_analysis.py -r hadoop $INPUT_HDFS --output-dir $OUTPUT_HDFS --no-output
 
-       echo "Job completed. Results at: $OUTPUT_HDFS" 
+    echo "Job completed. Results at: $OUTPUT_HDFS" 
 
 Temperature Job (run_temperature.sh):
       
-      ```bash
-      INPUT_HDFS="/user/sofia/climate_data/raw/weather_data.csv"
-      OUTPUT_HDFS="/user/sofia/climate_data/processed/temperature"
+    INPUT_HDFS="/user/sofia/climate_data/raw/weather_data.csv"
+    OUTPUT_HDFS="/user/sofia/climate_data/processed/temperature"
 
-      echo "Running temperature MapReduce job on Hadoop..."
-      python mapreduce/temperature_analysis.py -r hadoop $INPUT_HDFS --output-dir $OUTPUT_HDFS --no-output
+    echo "Running temperature MapReduce job on Hadoop..."
+    python mapreduce/temperature_analysis.py -r hadoop $INPUT_HDFS --output-dir $OUTPUT_HDFS --no-output
 
-      echo "Job completed. Results at: $OUTPUT_HDFS"
+    echo "Job completed. Results at: $OUTPUT_HDFS"
 
 #### Step 3: Download Processed Results
-        ```bash
+     
     PROCESSED_DIR_LOCAL="./data/processed"
     HDFS_PROCESSED_DIR="/user/sofia/climate_data/processed"
 
@@ -155,9 +153,9 @@ Temperature Job (run_temperature.sh):
     echo "Download finished. Files are available in $PROCESSED_DIR_LOCA
 
 #### Step 4: Launch Flask API
-      cd api
-      pip install -r requirements.txt
-      python app.py
+    cd api
+    pip install -r requirements.txt
+    python app.py
 
 #### Step 5: Test API Example
 curl "http://localhost:5000/data/temperature?city=Medellin&year=2022" | jq
