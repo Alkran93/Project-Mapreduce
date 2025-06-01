@@ -106,33 +106,32 @@
 
 #### Step 1: Upload Raw Data to HDFS
     ```bash
+    RAW_DATA_PATH="./data/raw/weather_data.csv"
+    HDFS_DIR="/user/sofia/climate_data/raw"
 
-RAW_DATA_PATH="./data/raw/weather_data.csv"
-HDFS_DIR="/user/sofia/climate_data/raw"
+    echo "Creating directory in HDFS if it doesn't exist..."
+    hdfs dfs -mkdir -p $HDFS_DIR
 
-echo "Creating directory in HDFS if it doesn't exist..."
-hdfs dfs -mkdir -p $HDFS_DIR
+    echo "Uploading raw CSV file to HDFS..."
+    hdfs dfs -put -f $RAW_DATA_PATH $HDFS_DIR/
 
-echo "Uploading raw CSV file to HDFS..."
-hdfs dfs -put -f $RAW_DATA_PATH $HDFS_DIR/
-
-echo "Upload completed."
+    echo "Upload completed."
 
 #### Step 2: Run MapReduce Jobs
 Precipitation Job (run_precipitation.sh):
+   
     ```bash
-  
-   INPUT_HDFS="/user/sofia/climate_data/raw/weather_data.csv"
-   OUTPUT_HDFS="/user/sofia/climate_data/processed/precipitation"
+       INPUT_HDFS="/user/sofia/climate_data/raw/weather_data.csv"
+       OUTPUT_HDFS="/user/sofia/climate_data/processed/precipitation"
 
-   echo "Running precipitation MapReduce job on Hadoop..."
-   python mapreduce/precipitation_analysis.py -r hadoop $INPUT_HDFS --output-dir $OUTPUT_HDFS --no-output
+       echo "Running precipitation MapReduce job on Hadoop..."
+       python mapreduce/precipitation_analysis.py -r hadoop $INPUT_HDFS --output-dir $OUTPUT_HDFS --no-output
 
-   echo "Job completed. Results at: $OUTPUT_HDFS" 
+       echo "Job completed. Results at: $OUTPUT_HDFS" 
 
 Temperature Job (run_temperature.sh):
+      
       ```bash
-
       INPUT_HDFS="/user/sofia/climate_data/raw/weather_data.csv"
       OUTPUT_HDFS="/user/sofia/climate_data/processed/temperature"
 
@@ -142,18 +141,18 @@ Temperature Job (run_temperature.sh):
       echo "Job completed. Results at: $OUTPUT_HDFS"
 
 #### Step 3: Download Processed Results
-      ```bash
-      PROCESSED_DIR_LOCAL="./data/processed"
-      HDFS_PROCESSED_DIR="/user/sofia/climate_data/processed"
+        ```bash
+    PROCESSED_DIR_LOCAL="./data/processed"
+    HDFS_PROCESSED_DIR="/user/sofia/climate_data/processed"
 
-      echo "Creating local folder for results if it doesn't exist..."
-      mkdir -p $PROCESSED_DIR_LOCAL
+    echo "Creating local folder for results if it doesn't exist..."
+    mkdir -p $PROCESSED_DIR_LOCAL
 
-      echo "Downloading results from HDFS..."
-      hdfs dfs -get -f $HDFS_PROCESSED_DIR/precipitation/* $PROCESSED_DIR_LOCAL/
-      hdfs dfs -get -f $HDFS_PROCESSED_DIR/temperature/* $PROCESSED_DIR_LOCAL/
+    echo "Downloading results from HDFS..."
+    hdfs dfs -get -f $HDFS_PROCESSED_DIR/precipitation/* $PROCESSED_DIR_LOCAL/
+    hdfs dfs -get -f $HDFS_PROCESSED_DIR/temperature/* $PROCESSED_DIR_LOCAL/
 
-      echo "Download finished. Files are available in $PROCESSED_DIR_LOCA
+    echo "Download finished. Files are available in $PROCESSED_DIR_LOCA
 
 #### Step 4: Launch Flask API
       cd api
