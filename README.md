@@ -104,27 +104,64 @@
 
 ### 5. Running the System
 
-#### Prerequisites
-
-- Hadoop cluster or local Hadoop setup  
-- Python 3.8+ and required packages (`mrjob`, `flask`, `pandas`, `flask-cors`)  
-- Data files in HDFS or local paths  
-
-#### Steps
-
-1. Upload raw CSV files to HDFS (`scripts/hdfs_upload.sh` or manually).  
-2. Run MapReduce jobs:  
-   ```bash
-   python mapreduce/precipitation_analysis.py -r hadoop hdfs:///path/to/input.csv > data/processed/precipitation_results.csv
-   python mapreduce/temperature_analysis.py -r hadoop hdfs:///path/to/input.csv > data/processed/temperature_results.csv
-3. Start Flask API:
+#### Step 1: Upload Raw Data to HDFS
     ```bash
-        Copy
-        Edit
-        cd api
-        pip install -r requirements.txt
-        python app.py
-4. Access API at http://localhost:5000.
+
+RAW_DATA_PATH="./data/raw/weather_data.csv"
+HDFS_DIR="/user/sofia/climate_data/raw"
+
+echo "Creating directory in HDFS if it doesn't exist..."
+hdfs dfs -mkdir -p $HDFS_DIR
+
+echo "Uploading raw CSV file to HDFS..."
+hdfs dfs -put -f $RAW_DATA_PATH $HDFS_DIR/
+
+echo "Upload completed."
+
+#### Step 2: Run MapReduce Jobs
+Precipitation Job (run_precipitation.sh):
+    ```bash
+  
+   INPUT_HDFS="/user/sofia/climate_data/raw/weather_data.csv"
+   OUTPUT_HDFS="/user/sofia/climate_data/processed/precipitation"
+
+   echo "Running precipitation MapReduce job on Hadoop..."
+   python mapreduce/precipitation_analysis.py -r hadoop $INPUT_HDFS --output-dir $OUTPUT_HDFS --no-output
+
+   echo "Job completed. Results at: $OUTPUT_HDFS" 
+
+Temperature Job (run_temperature.sh):
+      ```bash
+
+      INPUT_HDFS="/user/sofia/climate_data/raw/weather_data.csv"
+      OUTPUT_HDFS="/user/sofia/climate_data/processed/temperature"
+
+      echo "Running temperature MapReduce job on Hadoop..."
+      python mapreduce/temperature_analysis.py -r hadoop $INPUT_HDFS --output-dir $OUTPUT_HDFS --no-output
+
+      echo "Job completed. Results at: $OUTPUT_HDFS"
+
+#### Step 3: Download Processed Results
+      ```bash
+      PROCESSED_DIR_LOCAL="./data/processed"
+      HDFS_PROCESSED_DIR="/user/sofia/climate_data/processed"
+
+      echo "Creating local folder for results if it doesn't exist..."
+      mkdir -p $PROCESSED_DIR_LOCAL
+
+      echo "Downloading results from HDFS..."
+      hdfs dfs -get -f $HDFS_PROCESSED_DIR/precipitation/* $PROCESSED_DIR_LOCAL/
+      hdfs dfs -get -f $HDFS_PROCESSED_DIR/temperature/* $PROCESSED_DIR_LOCAL/
+
+      echo "Download finished. Files are available in $PROCESSED_DIR_LOCA
+
+#### Step 4: Launch Flask API
+      cd api
+      pip install -r requirements.txt
+      python app.py
+
+#### Step 5: Test API Example
+curl "http://localhost:5000/data/temperature?city=Medellin&year=2022" | jq
 
 ### 6. Usage Example
 
