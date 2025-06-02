@@ -158,7 +158,7 @@ Temperature Job (run_temperature.sh):
     python app.py
 
 #### Step 5: Test API Example
-curl "http://localhost:5000/data/temperature?city=Medellin&year=2022" | jq
+curl "http://localhost:5000/data/temperature?city=Medellin&year=2022" 
 
 ### 6. Usage Example
 
@@ -171,6 +171,21 @@ curl "http://localhost:5000/data/temperature?city=Medellin&year=2022" | jq
 #### C4 Model
 - Distributed batch processing architecture with HDFS and MapReduce.
 -API layer provides data access and filtering.
+
+### 8. Running Unit Tests for the API
+To ensure your API works correctly, run the automated unit tests:
+
+#### Prerequisites
+- Python 3 installed
+- pytest installed (pip install pytest)
+- Your Flask app (app.py) and test file (test_api.py) are in the same folder
+
+#### Running the tests
+Open your terminal or PowerShell in the API folder, then run:
+
+     pytest test_api.py
+You should see output indicating how many tests passed or failed.
+
 
 Authors
 Sofia Zapata Zuluaga
