@@ -185,9 +185,9 @@ Open your terminal or PowerShell in the API folder, then run:
 
      pytest test_api.py
 You should see output indicating how many tests passed or failed.
+--------------------------------------------------------------------------------------------------
 
-
-Authors
-Sofia Zapata Zuluaga
-Universidad EAFIT
-2025-1
+Authors:
+   - Sofia Zapata Zuluaga
+   - Universidad EAFIT
+   - 2025-1
